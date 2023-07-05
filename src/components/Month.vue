@@ -1,33 +1,34 @@
 <template>
-    <!-- <div class="day">
-        <h2>{{ day }}</h2>
-        <div class="events">
-        <div class="event" v-for="event in events" :key="event.id">
-            <h3>{{ event.eventName }}</h3>
-            <p>{{ event.description }}</p>
-        </div>
-        </div>
-    </div> -->
-    <h1>{{month}}</h1>
+  <FullCalendar ref="fullCalendar" :options="calendarOptions" />
 </template>
 
 <script>
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 export default {
+  components: {
+    FullCalendar,
+  },
   data() {
     return {
-        month: 'May',
+      calendarOptions: {
+        //property path: el.__k.props.children[0].props.options
+        plugins: [ dayGridPlugin, interactionPlugin ],
+        initialView: 'dayGridMonth',
+        dateClick: this.handleDateClick,
+        events: [
+        ]
+      }
     }
-  }, 
+  },
   methods: {
-  }
+    handleDateClick: function(arg) {
+      alert('date click! ' + arg.dateStr)
+      let calendarApi = this.$refs.fullCalendar.getApi()
+      console.log(calendarApi) //this is the calendar API
+    }
+  },
 }
 </script>
-
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-</style>

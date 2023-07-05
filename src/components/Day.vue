@@ -25,9 +25,16 @@ export default {
             console.log(this.events)
         })
     },
+    getMonth: function() {
+        // return current month using new Date().getMonth() with each date in events array
+        const month = new Date().getMonth()
+        console.log(month)
+        return month
+    },
   },
   created() {
     this.getEvents();
+    this.getMonth()
   }
 }
 </script>
