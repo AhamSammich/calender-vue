@@ -41,7 +41,7 @@ export default {
       methods: {
         handleSubmit: function() {
           console.log(this.formValues)
-          axios.post('/api/events', this.formValues).then(() => {
+          axios.post('http://localhost:8080/api/events', this.formValues).then(() => {
             console.log('posted')
           })
         },

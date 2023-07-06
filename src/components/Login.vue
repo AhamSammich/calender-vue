@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default{
     data(){
         return{
@@ -50,7 +51,7 @@ export default{
             return this.registered = !registered
         },
         handleLogin: function() {
-            axios.post('/api/login', this.newLogin).then((respond) => {
+            axios.post('http://localhost:8080/api/users/login', this.newLogin).then((respond) => {
                 if(respond.data === 'success') {
                     console.log('success')
                     return this.loginPending = false
@@ -78,7 +79,8 @@ export default{
                 alert("Username can't contain special characters and must be between 5-15 characters long.")
             } else if(userNameValidateed && passwordsMatch){
                 const user_id = this.generateUserId(username)
-                axios.post('/api/register', { username: username, password: password, user_id: user_id}).then(() => {
+                axios.post('http://localhost:8080/api/users/signup', { username: username, password: password, user_id: user_id}
+                ).then(() => {
                     console.log('User login posted!')
                 })
             }

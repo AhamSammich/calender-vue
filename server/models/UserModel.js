@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 
 const userSchema = new Schema({
-  email: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -21,16 +21,16 @@ async function hashPassword(password) {
 }
 
 // static login method
-userSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (username, password) {
     // validation
-    if (!email || !password) {
+    if (!username || !password) {
       throw Error("All fields must be filled.");
     }
 
     // get user
-    const user = await this.findOne({ email });
+    const user = await this.findOne({ username });
     if (!user) {
-      throw Error("Incorrect email");
+      throw Error("Incorrect username");
     }
 
     // check password
@@ -43,21 +43,21 @@ userSchema.statics.login = async function (email, password) {
 }
 
 // static signup method
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (username, password) {
   // validation
-  if (!email || !password) {
+  if (!username || !password) {
     throw Error("All fields must be filled.");
   }
-  if (!validator.isEmail(email)) {
-    throw Error("Please provide a valid email address.");
-  }
-  if (!validator.isStrongPassword(password)) {
-    throw Error("Please provide a stronger password.");
-  }
+  // if (!validator.isEmail(username)) {
+  //   throw Error("Please provide a valid email address.");
+  // }
+  // if (!validator.isStrongPassword(password)) {
+  //   throw Error("Please provide a stronger password.");
+  // }
 
-  const exists = await this.findOne({ email });
+  const exists = await this.findOne({ username });
   if (exists) {
-    throw Error("Email already in use.");
+    throw Error("Username already in use.");
   }
 
   // generate hash
@@ -65,7 +65,7 @@ userSchema.statics.signup = async function (email, password) {
 
   // create new user
   const user = await this.create({
-    email,
+    username,
     password: hash,
   });
   return user;
