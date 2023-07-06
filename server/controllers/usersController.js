@@ -21,7 +21,6 @@ async function loginUser(req, res) {
 async function signupUser(req, res) {
   const { username, password } = req.body;
   try {
-    console.log(username, password);
     const user = await User.signup(username, password);
     const token = createToken(user._id);
     console.log({ user, token })
