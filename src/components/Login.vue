@@ -1,6 +1,7 @@
 <template>
-    <template v-if="!registered">
-        <div class="registerForm">
+    <div v-if="loginPending">
+    <!-- hide the form if logged in -->
+        <div v-if="!registered" class="registerForm">
             <a @click="setRegisterStatus(registered)">Login</a>
             <h2>Register</h2>
             <form @submit.prevent="handleRegister">
@@ -13,9 +14,7 @@
               <button type="submit">Submit</button> 
             </form>
         </div>
-    </template>
-    <template v-else-if="registered">
-        <div class="loginForm">
+        <div v-else-if="registered" class="loginForm">
             <h2>Login</h2>
             <form @submit.prevent="handleLogin">
               <label for="username">Username</label>
@@ -26,7 +25,7 @@
             </form>
             <p>Don't have an account?</p><a @click="setRegisterStatus">Register</a>
         </div>
-    </template>
+    </div>
 </template>
 
 <script>
@@ -51,9 +50,11 @@ export default{
             return this.registered = !registered
         },
         handleLogin: function() {
-            axios.post('http://localhost:8080/api/users/login', this.newLogin).then((respond) => {
-                if(respond.data === 'success') {
-                    console.log('success')
+            // Changed this.newLogin -> this.credentials to use correct form values during login
+            axios.post('http://localhost:8080/api/users/login', this.credentials).then((respond) => {
+                if(respond.status === 200) {
+                    // logs username and token to the console if request successful
+                    console.log(respond.data)
                     return this.loginPending = false
                 } else {
                     alert('Incorrect username or password')
