@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const eventRoutes = require("./routes/events");
+const userRoutes = require("./routes/users");
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/events", eventRoutes);
+app.use("/api/users", userRoutes);
 
 // connect to MongoDB
 mongoose
